@@ -1,0 +1,9 @@
+{
+    "name": "pong"
+  , "version": "0.0.1"
+  , "private": true
+  , "dependencies": {
+      "ejs" : "0.8.4"
+    ,  "express" : "3.2.6"
+  }
+}

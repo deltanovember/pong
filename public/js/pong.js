@@ -19,6 +19,9 @@
     var p1_score = 0;
     var p2_score = 0;
 
+    var socket = io.connect('http://192.168.1.2');
+
+
     // shim layer with setTimeout fallback
     window.requestAnimFrame = (function(){
       return  window.requestAnimationFrame       ||

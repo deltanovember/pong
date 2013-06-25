@@ -20,4 +20,5 @@ app.configure(function () {
 app.get('/', routes.index);
 
 
-app.listen(3000);
+var server = app.listen(3000);
+var io = require('socket.io').listen(server);

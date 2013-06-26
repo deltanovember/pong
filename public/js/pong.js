@@ -32,37 +32,40 @@
               };
     })();
 
+    socket.on('keydownfromserver', function (data) {
+        if (data.key == 'up')
+            paddle1_vel[1] = -PADDLE_VEL;
+        else if (data.key == 'down')
+            paddle1_vel[1] = PADDLE_VEL;
+    });    
+
+    socket.on('keyupfromserver', function (data) {
+        paddle1_vel[1] = 0;
+    });   
 
     var body = document.getElementById('body');
+
+
     body.onkeydown = function(e) {
 
         // down
         if (e.keyCode == 40) {
             paddle2_vel[1] = PADDLE_VEL;
+            socket.emit('keydown', { key: 'down' });
 
         } else if (e.keyCode == 38) {
             // up
             paddle2_vel[1] = -PADDLE_VEL;
-        } else if (e.keyCode == 87) {
-            // w
-            paddle1_vel[1] = -PADDLE_VEL;
-
-        } else if (e.keyCode == 83) {
-            // 's'
-             paddle1_vel[1] = PADDLE_VEL;
-
-        }
+            socket.emit('keydown', { key: 'up' });            
+        } 
 
     };
 
     body.onkeyup = function(e) {
         if (e.keyCode == 38 || e.keyCode == 40) {
             // up
-            paddle2_vel[1] = 0;
-        } else if (e.keyCode == 87 || e.keyCode == 83) {
-            // w
-            paddle1_vel[1] = 0;
-
+            paddle2_vel[1] = 0;            
+            socket.emit('keyup', { key: 'up' });
         }
 
     };

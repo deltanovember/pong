@@ -22,3 +22,12 @@ app.get('/', routes.index);
 
 var server = app.listen(3000);
 var io = require('socket.io').listen(server);
+
+io.sockets.on('connection', function (socket) {
+  socket.on('keydown', function (data) {
+    socket.broadcast.emit('keydownfromserver', data);
+  });
+  socket.on('keyup', function (data) {
+    socket.broadcast.emit('keyupfromserver', data);
+  });  
+});

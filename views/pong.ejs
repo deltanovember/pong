@@ -3,11 +3,25 @@
   <head>
     <title>Pong</title>
     <meta charset="UTF-8">
+    <link href="http://twitter.github.io/bootstrap/assets/css/bootstrap.css" rel="stylesheet">
   </head>
   <body id="body">
       <canvas id="canvas" height="400" width="600">
       </canvas>
+      <script src="http://twitter.github.io/bootstrap/assets/js/jquery.js"></script>
+      <script src="http://twitter.github.io/bootstrap/assets/js/bootstrap-modal.js"></script>
      <script src="/socket.io/socket.io.js"></script> 
     <script src="/js/pong.js"></script>
+ 
+<!-- Modal -->
+<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <h3 id="myModalLabel">Welcome to Pong</h3>
+  </div>
+  <div class="modal-body">
+    <p>Waiting for opponent</p>
+  </div>
+</div>
+
   </body>
 </html>

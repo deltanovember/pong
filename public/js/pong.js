@@ -1,4 +1,4 @@
-(function() {
+$(function() {
 
     var BALL_RADIUS = 20;
     var PAD_WIDTH = 8;
@@ -18,8 +18,20 @@
     var vel = [8, 2];
     var p1_score = 0;
     var p2_score = 0;
+    var started = false;
 
     var socket = io.connect('http://192.168.1.2');
+
+    $('#myModal').modal({
+        keyboard: false,
+        backdrop: 'static'
+    });
+
+    socket.on('begin', function (data) {
+        console.log('starting');
+        $('#myModal').modal('hide');
+        started = true;
+    });   
 
 
     // shim layer with setTimeout fallback
@@ -30,6 +42,12 @@
               function( callback ){
                 window.setTimeout(callback, 1000 / 60);
               };
+    })();
+
+
+    (function animateLoop(){
+        requestAnimFrame(animateLoop);
+        draw();
     })();
 
     socket.on('keydownfromserver', function (data) {
@@ -70,10 +88,6 @@
 
     };
 
-    (function animateLoop(){
-        requestAnimFrame(animateLoop);
-        draw();
-    })();
 
 
     // helper function that spawns a ball by updating the 
@@ -124,16 +138,6 @@
         	context.fillText(p1_score, 100, 50);
         	context.fillText(p2_score, 450, 50);
 
-            // update paddle's vertical position, keep paddle on the screen
-            var p1y = paddle1_pos[1] + paddle1_vel[1];
-            var p2y = paddle2_pos[1] + paddle2_vel[1];
-            if (p1y >= 0 && (p1y + PAD_HEIGHT) <= HEIGHT) {   
-                paddle1_pos[1] += paddle1_vel[1];
-            }
-            if (p2y >= 0 && (p2y + PAD_HEIGHT) <= HEIGHT) {
-                paddle2_pos[1] += paddle2_vel[1];
-            }
-
             // draw mid line and gutters
             context.beginPath();
             context.moveTo(WIDTH / 2, 0);
@@ -149,6 +153,19 @@
 
             drawPaddle(context, paddle1_pos);
             drawPaddle(context, paddle2_pos); 
+
+            if (!started)
+                return;
+
+            // update paddle's vertical position, keep paddle on the screen
+            var p1y = paddle1_pos[1] + paddle1_vel[1];
+            var p2y = paddle2_pos[1] + paddle2_vel[1];
+            if (p1y >= 0 && (p1y + PAD_HEIGHT) <= HEIGHT) {   
+                paddle1_pos[1] += paddle1_vel[1];
+            }
+            if (p2y >= 0 && (p2y + PAD_HEIGHT) <= HEIGHT) {
+                paddle2_pos[1] += paddle2_vel[1];
+            }
 
             var centerX = canvas.width / 2;
             var centerY = canvas.height / 2;
@@ -214,4 +231,4 @@
         ball_init(left);
     }
 
-})();
+});
